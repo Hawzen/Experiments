@@ -1,4 +1,9 @@
-def getTargets(sources):
+from requests import get
+import os
+from bs4 import BeautifulSoup
+
+
+def downloadFiles(sources):
     """
     A function that gets all links for supported files in a KSU faculty page and downloads them locally
     supported file = 'pdf', 'doc', 'docx', 'csv', 'xls', 'html', 'txt', 'rtf', 'jpg', 'png', 'ppt', 'pptx'
@@ -11,19 +16,29 @@ def getTargets(sources):
     supportedFiles = ('pdf', 'doc', 'docx', 'csv', 'xls', 'html', 'txt', 'rtf', 'jpg', 'png', 'ppt', 'pptx')
     for source in sources.split('\n'):
         url = source[0: source.find('$$$$')]
-        directory = source[source.find('$$$$') + 4:]
+        directory = source[source.find('$$$$') + 4:].replace(' ', '')
+
+        if directory == "":
+            print("Ignored Link unnamed link at {}".format(url))
+            continue
+        elif directory[0] == "/" or "\\":
+            directory = directory[1:]
+        if directory[-1] != "\\":
+            directory = directory + "\\"
+
         os.makedirs(os.path.dirname(directory), exist_ok=True)  # Make all needed dirs
 
         request = get(url)  # Get the page
         soup = BeautifulSoup(request.text, 'html.parser')  # Pass it to Beautiful Soup and extract all links (targets)
-        targets = [element.find('a')['href'] for element in soup.find_all('tr') if element.find('a', href=True)]
+        targets = [element.find('a')['href'] for element in soup.find_all('span', 'file') if
+                   element.find('a', href=True)]
 
         for target in targets:  # For every target, get target and make a file of it
             dot = target.rfind('.')  # Gets the file extension dot index
             start = target.rfind('/')  # Gets the index of start of file name
 
-            if target[dot + 1] not in supportedFiles:  # Check for support
-                print('File {} not supported'.format(target[start + 1:]))
+            if target[dot + 1:] not in supportedFiles:  # Check for support
+                print('File {} not supported'.format(target))
                 continue
 
             fetchedFile = get(target, stream=True)
@@ -33,11 +48,41 @@ def getTargets(sources):
                 print('Added {}'.format(name))
 
 
+def getSubpages(sources, ignoreSet=set()):
+    """A function that takes in a String of links of KSU faculty separated by lines and gets all content filled sub
+    pages of that page """
+    for source in sources.split('\n'):
+        if source.find('$$$$') == -1:
+            url = source
+        else:
+            url = source[:source.find('$$$$')]
+
+        headers = {'Accept': 'text/html', 'Accept-Encoding': '', 'User-Agent': None}
+        request = get(url, headers=headers)  # Get the page
+        soup = BeautifulSoup(request.text, 'html.parser')  # Pass it to Beautiful Soup and extract all links (targets)
+
+        subdirs = soup.find_all('span', 'field-content')
+        hrefs = set(subdir.find('a')['href'] for subdir in subdirs if subdir.find('a', href=True))
+        nodeTitle = '' if soup.find('h4', 'node-title') == None else soup.find('h4', 'node-title').text
+
+        unexplored = hrefs.difference(ignoreSet)  # Unexplored hrefs
+        allInfo = {source: nodeTitle}  # All of the info in this node
+
+        for href in unexplored:
+            ignoreSet.add(href)
+        for href in unexplored:
+            results = (getSubpages("https://faculty.ksu.edu.sa" + href, ignoreSet))
+            for key in results:
+                results[key] = nodeTitle + "/" + results[key]
+            allInfo.update(results)
+
+        return allInfo
+
+
 if __name__ == '__main__':
-    from requests import get
-    import os
-    from bs4 import BeautifulSoup
 
     with open('sources.txt', 'r') as Strings:
         lines = Strings.read()
-    getTargets(lines)
+    a = getSubpages('https://fac.ksu.edu.sa/ssalsaleh')
+    for link, name in a.items():
+        downloadFiles("{}$$$${}".format(link, name))
