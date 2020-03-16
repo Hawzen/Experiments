@@ -84,7 +84,6 @@ def getSubpages(sources, ignoreSet=None):
 
 if __name__ == '__main__':
 
-    downloadFiles("https://fac.ksu.edu.sa/ssalsaleh/course-material/98789$$$$CBD")
     while True:
         choice = input(
             "Enter a number for action:\n"
@@ -98,14 +97,11 @@ if __name__ == '__main__':
                            "1 : Do for one faculty member\n"
                            "2 : Do for multiple faculty members\n")
             if choice == '1':
-                getSubpages(input("Enter link to faculty member's homepage:\t"))
-                break
+                a = getSubpages(input("Enter link to faculty member's homepage:\t"))
+
             elif choice == '2':
                 members = input("Enter links of faculty members, each separated by a semicolon:\t")
-                getSubpages(members.replace(";", '\n'))
-                break
-        """
-        a = getSubpages(lines)
-        for link, name in a.items():
-            downloadFiles("{}$$$${}".format(link, name))
-"""
+                a = getSubpages(members.replace(";", '\n'))
+
+            for link, name in a.items():
+                downloadFiles("{}$$$${}".format(link, name))
