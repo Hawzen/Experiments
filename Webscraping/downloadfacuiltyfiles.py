@@ -105,3 +105,4 @@ if __name__ == '__main__':
 
             for link, name in a.items():
                 downloadFiles("{}$$$${}".format(link, name))
+            break
