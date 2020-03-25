@@ -1,4 +1,4 @@
-from classes import *
+from users import User
 
 
 def checkRate(rate):
@@ -18,7 +18,7 @@ def finished(num, cursor, dictionary):
             return True
         return False
     # When navigating for set number of elements (e.g. followers)
-    if len(dictionary.keys()) < num:
+    if cursor[1] != 0:
         return False
     return True
 
@@ -60,10 +60,13 @@ def getFriendsIds(api, user):
         User: a USER object that we want to find whose friends are
 
     Output:
-        Returns a dictionary of known ids, cursor and other stuff
+        Returns a list of known ids
 
     Note:
         This could be configured using cursors like getFriends but it isn't needed since one call of api.friends_ids returns
         5000 ids at once, so it has a big enough maximum
     """
-    return api.friends_ids(user.json['id'], user.json['screen_name'])  # Warning: Maximum of 5000
+    ids = api.friends_ids(user.json['id'], user.json['screen_name'])
+    user.addFriend(ids) # Warning: Maximum of 5000
+    user.friendsIds.update(ids)
+    user.done = True

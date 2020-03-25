@@ -1,5 +1,6 @@
 import tweepy
-from classes import *
+import shelve
+from users import *
 from api_funcs import *
 
 with open('twitterKeys.txt', 'r') as file:
@@ -13,10 +14,12 @@ auth = tweepy.OAuthHandler(apiKey, apiSecretKey)
 auth.set_access_token(accessToken, accessTokenSecret)
 api = tweepy.API(auth)
 
+#Keep track of object target
+with shelve.open("target_shelve") as sh:
+    target = sh['target']
 
-#Target("")
+#target = Target("MohndAlrasheed")
+#target.searchFriends(api)
 
-"""
-    TODO: check if 'Target' friend searching works correctly
-    TODO: implement the 'User' friend id searching
-"""
+print(target.friends)
+print()
