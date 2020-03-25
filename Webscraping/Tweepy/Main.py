@@ -21,5 +21,9 @@ with shelve.open("target_shelve") as sh:
 #target = Target("MohndAlrasheed")
 #target.searchFriends(api)
 
-print(target.friends)
-print()
+#target.searchFOF(api)
+
+
+
+with shelve.open("target_shelve") as sh:
+    sh['target'] = target

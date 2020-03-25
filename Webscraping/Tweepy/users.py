@@ -35,11 +35,12 @@ class Target:
         print("Limit is {}".format(limit))
 
         for user in self.friends.values():
-            if limit < 1:
-                break
-            limit -= 1
 
             if not user.done:
+                if limit < 1:
+                    break
+                limit -= 1
+
                 getFriendsIds(api, user)
                 self.doneCounter += 1
         print("{} Left".format(len(self.friends) - self.doneCounter))
