@@ -19,3 +19,7 @@ seeks fs (Store s a) = Store (fs s) a
 
 peeks :: (s -> s) -> Store s a -> a
 peeks f (Store s a) = a $ f s
+
+
+instance Functor (Store s) where
+    fmap f (Store s fs) = Store s (f . fs)
