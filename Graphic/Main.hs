@@ -1,5 +1,4 @@
 module Main where
-
 import Data.Char
 
 data Store s a = Store s (s -> a)
@@ -25,8 +24,6 @@ current (Store s a) = a s
 instance Functor (Store s) where
     fmap f (Store s fs) = Store s (f . fs)
 
-
--- Also test whether `fmap` lets you map "over its content" correctly.
  {-
 [(1,'A'),(2,'B'),(3,'C'),(4,'D'),(5,'E'),(6,'F'),(7,'G'),(8,'H'),
  (9,'I'),(10,'J'),(11,'K'),(12,'L'),(13,'M'),(14,'N'),(15,'O'),
