@@ -28,12 +28,12 @@ instance Functor (Store s) where
 
 
 main = do
-		file <= BS.readFile "Sample.ppm"
-		NP.parsePPM file
+        file <- BS.readFile "Sample.ppm"
+        return $ NP.parsePPM file
 
 
 
-
+-- uglify (Either String (h, _)) = h something
 
 
 
