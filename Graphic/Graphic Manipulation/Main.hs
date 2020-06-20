@@ -62,7 +62,7 @@ handlePPM (Right result) = result
 getStatus :: ([NP.PPM], Maybe BS.ByteString) -> IO ()
 getStatus file = case file of
                         ([], _)           -> error "Empty images"
-                        (images, Nothing) -> print images
+                        (images, Nothing) -> mapM_ print images
                         (_, Just _)       -> do
                                                 print ("Image partially parsed\n")
                                                 print file
