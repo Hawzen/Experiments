@@ -34,17 +34,20 @@ instance Functor (Store s) where
 
 data Coord = Coord Int Int
 
-
+-- createStore img = Store (Coord 0 0) (??? img)
 
 -- IO 
 main = do
         result <- reader
         let file = handlePPM result
+            image = head (fst file)
+            -- data = snd file
         if (snd file == Nothing) 
             then print (fst file)
             else do
                     print ("Image partially parsed\n")
-                    print (file) 
+                    print (file)
+        -- return $ peek createStore image
     
 
 reader :: IO NP.PpmParseResult

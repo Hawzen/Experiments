@@ -1,0 +1,65 @@
+data Tree a = Leaf a | Node a (Tree a) (Tree a)
+              deriving (Show, Read, Eq)
+
+
+instance Semigroup (Tree (Int, String)) where
+    (<>) (Leaf (i, x))     (Leaf (j, y))     = Leaf (i+j, x ++ y)
+    (<>) (Leaf (i, x))     (Node (j, y) _ _) = Leaf (i+j, x ++ y)
+    (<>) (Node (i, x) _ _) (Leaf (j, y))     = Leaf (i+j, x ++ y)
+    (<>) (Node (i, x) _ _) (Node (j, y) _ _) = Leaf (i+j, x ++ y)
+
+
+instance Monoid (Tree (Int, String)) where  
+    mempty = Leaf (0, "")
+
+    orig@(Node (i, x) _ _) `mappend` (Leaf (0, ""))         = orig
+    (Leaf (0, ""))         `mappend` orig@(Node (i, x) _ _) = orig
+
+    (Leaf (i, x))     `mappend` (Leaf (j, y))        =
+                             Leaf (i+j, x ++ y) 
+
+    (Leaf (i, x))     `mappend` (Node (j, y) l r)    = 
+                             Leaf (i+j, x ++ y) `mappend` l `mappend` r
+
+    (Node (i, x) l r) `mappend` (Leaf (j, y))        =
+                             Leaf (i+j, x ++ y)  `mappend` l `mappend` r
+
+    (Node (i, x) l r) `mappend` (Node (j, y) l2 r2)  = 
+                             Leaf (i+j, x ++ y) `mappend` l `mappend` r
+                                                `mappend` l2 `mappend` r2
+
+
+collectSeperate :: Tree (Int, String) -> String -> [((Int, String), String)]
+collectSeperate (Leaf (i, s)) codes = [((i, s), codes)]
+collectSeperate node@(Node (i, s) l r) codes = 
+                            (collectSeperate l ('L':codes)) ++
+                            (collectSeperate r ('R':codes))
+
+
+collectOne :: Tree (Int, String) -> (Int, String)
+collectOne (Leaf (i, s)) = (i, s)
+collectOne node@(Node (i, s) l r) = collectOne $ l `mappend` r
+
+freq :: Tree (Int, String) -> Int
+freq (Leaf (i, _)) = i
+freq node = fst $ collectOne node
+
+
+stackSort :: [Tree (Int, String)] -> [Tree (Int, String)]
+stackSort xs = sortBy (\a b-> compare (freq a) (freq b)) xs
+
+
+pluck :: [Tree (Int, String)] -> [Tree (Int, String)]
+pluck (first:second:xs) = (Node (0, "") first second):xs
+
+
+pluckAll :: [Tree (Int, String)] -> Tree (Int, String)
+pluckAll (fulltree:[]) = fulltree
+pluckAll xs = pluckAll $ pluck $ stackSort xs
+
+
+huffman :: [(Char, Int)] -> [(Char, String)]
+huffman xs = let stack = map (\(ch,freq) -> Leaf (freq,[ch])) xs
+                fulltree = pluckAll stack
+             in map (\((i, s:_), code) -> (s, reverse code)) $ 
+                                    collectSeperate fulltree ""
