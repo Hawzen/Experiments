@@ -1,7 +1,10 @@
 module Main where
+
 import Data.Char
 import qualified Data.ByteString as BS
 import qualified Graphics.Netpbm as NP
+
+-- Store functions
 
 data Store s a = Store s (s -> a)
 
@@ -27,13 +30,33 @@ instance Functor (Store s) where
     fmap f (Store s fs) = Store s (f . fs)
 
 
+-- Image functions
+
+data Coord = Coord Int Int
+
+
+
+-- IO 
 main = do
-        file <- BS.readFile "Sample.ppm"
-        return $ NP.parsePPM file
+        result <- reader
+        let file = handlePPM result
+        if (snd file == Nothing) 
+            then print (fst file)
+            else do
+                    print ("Image partially parsed\n")
+                    print (file) 
+    
 
+reader :: IO NP.PpmParseResult
+reader = do
+            file <- BS.readFile "Sample.ppm"
+            return $ NP.parsePPM file
 
+-- handler ::
+handlePPM :: NP.PpmParseResult -> ([NP.PPM], Maybe BS.ByteString)
+handlePPM (Left err) = error err
+handlePPM (Right result) = result
 
--- uglify (Either String (h, _)) = h something
 
 
 
