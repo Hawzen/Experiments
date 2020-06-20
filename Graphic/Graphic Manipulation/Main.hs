@@ -1,6 +1,7 @@
 module Main where
 
 import Data.Char
+import qualified Foreign.Storable as ST
 import qualified Data.ByteString as BS
 import qualified Graphics.Netpbm as NP
 
@@ -33,7 +34,11 @@ instance Functor (Store s) where
 -- Image functions
 
 data Coord = Coord Int Int
--- createStore img = Store (Coord 0 0) (??? img)
+
+-- createStore :: [NP.PPM] -> (Store a s)
+-- createStore img = Store (Coord 0 0) (ST.peek)
+
+
 
 -- IO 
 main = do
