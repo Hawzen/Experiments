@@ -39,15 +39,9 @@ data Coord = Coord Int Int
 -- IO 
 main = do
         result <- reader
-        let file = handlePPM result
-            image = head (fst file)
-            -- data = snd file
-        if (snd file == Nothing) 
-            then print (fst file)
-            else do
-                    print ("Image partially parsed\n")
-                    print (file)
-        -- return $ peek createStore image
+        let file@(images, rest) = handlePPM result
+        getStatus file
+        -- return $ map createStore images
     
 
 reader :: IO NP.PpmParseResult
@@ -61,40 +55,13 @@ handlePPM (Left err) = error err
 handlePPM (Right result) = result
 
 
+getStatus :: ([NP.PPM], Maybe BS.ByteString) -> IO ()
+getStatus file = case file of
+                        ([], _)           -> error "Empty images"
+                        (images, Nothing) -> print images
+                        (_, Just _)       -> do
+                                                print ("Image partially parsed\n")
+                                                print file
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- {-
-[(1,'A'),(2,'B'),(3,'C'),(4,'D'),(5,'E'),(6,'F'),(7,'G'),(8,'H'),
- (9,'I'),(10,'J'),(11,'K'),(12,'L'),(13,'M'),(14,'N'),(15,'O'),
- (16,'P'),(17,'Q'),(18,'R'),(19,'S'),(20,'T'),(21,'U'),(22,'V'),
- (23,'W'),(24,'X'),(25,'Y'),(26,'Z')]
-  -}
-
--- toChar :: Int -> Char
--- toChar i = ['A'..'Z'] !! (i `mod` 26)
-
--- charStore = Store 10 toChar -- -> 'K'
-
-
--- main :: IO ()
--- main = do
---         let a = peek (pos charStore) charStore
---         let b = current (fmap toLower charStore)
---         print [a, b]
+                    
