@@ -33,7 +33,6 @@ instance Functor (Store s) where
 -- Image functions
 
 data Coord = Coord Int Int
-
 -- createStore img = Store (Coord 0 0) (??? img)
 
 -- IO 
