@@ -1,6 +1,7 @@
 module Main where
 
 import Data.Char
+import Data.List.Split
 import qualified Foreign.Storable as ST
 import qualified Data.ByteString as BS
 import qualified Graphics.Netpbm as NP
@@ -43,9 +44,11 @@ data Coord = Coord Int Int
 -- IO 
 main = do
         result <- reader
-        let file@(images, rest) = handlePPM result
-        getStatus file
-        -- return $ map createStore images
+        (image:_) <- handlePPM result
+        print image
+        print $ serialize image
+        return ()
+        -- writeFile "WriteTo.ppm" $ serilize image
     
 
 reader :: IO NP.PpmParseResult
@@ -53,19 +56,23 @@ reader = do
             file <- BS.readFile "Sample.ppm"
             return $ NP.parsePPM file
 
--- handler ::
-handlePPM :: NP.PpmParseResult -> ([NP.PPM], Maybe BS.ByteString)
-handlePPM (Left err) = error err
-handlePPM (Right result) = result
+
+-- PPM P6 image (256,256)
+serialize :: NP.PPM -> String
+serialize image = 
+                let x = words $ show image
+                    -- len = length dim :: Int 
+                    -- [width, height] = splitOn "," $ 
+                    --                     take (length dim) (drop 1 dim)
+                in concat x
 
 
-getStatus :: ([NP.PPM], Maybe BS.ByteString) -> IO ()
+handlePPM :: NP.PpmParseResult -> IO [NP.PPM]
+handlePPM (Right (images, rest)) = return images
+
+
+getStatus :: ([NP.PPM], Maybe BS.ByteString) -> String
 getStatus file = case file of
-                        ([], _)           -> error "Empty images"
-                        (images, Nothing) -> mapM_ print images
-                        (_, Just _)       -> do
-                                                print ("Image partially parsed\n")
-                                                print file
-
-
-                    
+                        ([], _)           -> ""
+                        (images, Nothing) -> concat $ map show images
+                        (_, Just _)       -> show file

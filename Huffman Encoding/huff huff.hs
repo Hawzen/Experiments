@@ -1,5 +1,20 @@
+import Data.List
+import Data.Char
+import Debug.Trace
+import System.Random
+import Text.Printf
+import qualified Data.Map as Map
+import qualified Data.Map (insert)
+import qualified Data.Set as Set
+
 data Tree a = Leaf a | Node a (Tree a) (Tree a)
               deriving (Show, Read, Eq)
+
+-- instance Ord (Tree(Int, String)) where
+--     compare (Leaf (i, _))       (Leaf (j, _))       = compare i j
+--     compare (Leaf (i, _))     n@(Node (j, _) _ _)   = compare i (freq n)
+--     compare n@(Node (i, _) _ _)   (Leaf (j, _))       = compare (freq n) j
+--     compare n1 n2 = compare (freq n1) (freq n2)
 
 
 instance Semigroup (Tree (Int, String)) where
@@ -58,8 +73,8 @@ pluckAll (fulltree:[]) = fulltree
 pluckAll xs = pluckAll $ pluck $ stackSort xs
 
 
-huffman :: [(Char, Int)] -> [(Char, String)]
-huffman xs = let stack = map (\(ch,freq) -> Leaf (freq,[ch])) xs
+prob50 :: [(Char, Int)] -> [(Char, String)]
+prob50 xs = let stack = map (\(ch,freq) -> Leaf (freq,[ch])) xs
                 fulltree = pluckAll stack
              in map (\((i, s:_), code) -> (s, reverse code)) $ 
                                     collectSeperate fulltree ""
