@@ -1,7 +1,8 @@
 module Main where
 
 import Data.Char
-import Data.List.Split
+import Data.Binary
+import qualified Data.Vector.Storable as V
 import qualified Foreign.Storable as ST
 import qualified Data.ByteString as BS
 import qualified Graphics.Netpbm as NP
@@ -46,8 +47,9 @@ main = do
         result <- reader
         (image:_) <- handlePPM result
         print image
-        print $ serialize image
-        return ()
+        writeFile "WriteTo.ppm" $ serialize image
+        let NP.PPM header imgData = image
+        return (header, imgData)
         -- writeFile "WriteTo.ppm" $ serilize image
     
 
@@ -59,12 +61,10 @@ reader = do
 
 -- PPM P6 image (256,256)
 serialize :: NP.PPM -> String
-serialize image = 
-                let x = words $ show image
-                    -- len = length dim :: Int 
-                    -- [width, height] = splitOn "," $ 
-                    --                     take (length dim) (drop 1 dim)
-                in concat x
+serialize (NP.PPM (NP.PPMHeader t w h) img)  =
+                let headStr = foldl1 (\acc x-> x ++ "\n" ++ acc) 
+                                ["65535", show h, show w, show t] ++ "\n"
+                in headStr ++ (show $ encode $ NP.pixelDataToIntList img)
 
 
 handlePPM :: NP.PpmParseResult -> IO [NP.PPM]
