@@ -52,7 +52,7 @@ toPixel (x:px) =
 -- IO 
 main = do
         result <- reader
-        (image:_) <- handlePPM result
+        let (image:_) = handlePPM result
         print $ getStatus result
         writeFile "WriteTo.ppm" $ serialize image
         let NP.PPM header imgData = image
@@ -70,11 +70,11 @@ reader = do
 serialize :: NP.PPM -> String
 serialize (NP.PPM (NP.PPMHeader t w h) img)  =
                 let headStr = foldl1 (\acc x-> x ++ "\n" ++ acc) 
-                                ["65535", show h, show w, show t] ++ "\n"
+                                ["65535", show h, show w, "P3"] ++ "\n"
                     pixels = toPixel $ NP.pixelDataToIntList img -- [[R,G,B], [R,G,B], ...]
                     formatted = -- "R G B\tR G B\t....\nR G B\t..."
                      foldr (\(i,rgb) acc -> 
-                        (concatMap (\x -> show x ++ " ") rgb++)
+                        (concatMap (\x -> show x ++ " ") (reverse rgb)++)
                             $ if i `mod` w == 0
                                         then '\n':acc
                                         else ' ':acc) 
@@ -82,8 +82,8 @@ serialize (NP.PPM (NP.PPMHeader t w h) img)  =
                 in headStr ++ formatted
 
 
-handlePPM :: NP.PpmParseResult -> IO [NP.PPM]
-handlePPM (Right (images, rest)) = return images
+handlePPM :: NP.PpmParseResult -> [NP.PPM]
+handlePPM (Right (images, rest)) = images
 
 
 getStatus :: NP.PpmParseResult -> String
