@@ -74,7 +74,7 @@ serialize (NP.PPM (NP.PPMHeader t w h) img)  =
                     pixels = toPixel $ NP.pixelDataToIntList img -- [[R,G,B], [R,G,B], ...]
                     formatted = -- "R G B\tR G B\t....\nR G B\t..."
                      foldr (\(i,rgb) acc -> 
-                        (concatMap (\x -> show x ++ " ") (reverse rgb)++)
+                        (concatMap (\x -> show x ++ " ") rgb++)
                             $ if i `mod` w == 0
                                         then '\n':acc
                                         else ' ':acc) 
