@@ -53,7 +53,7 @@ toPixel (x:px) =
 main = do
         result <- reader
         (image:_) <- handlePPM result
-        print image
+        print $ getStatus result
         writeFile "WriteTo.ppm" $ serialize image
         let NP.PPM header imgData = image
         return (header, imgData)
@@ -86,8 +86,8 @@ handlePPM :: NP.PpmParseResult -> IO [NP.PPM]
 handlePPM (Right (images, rest)) = return images
 
 
-getStatus :: ([NP.PPM], Maybe BS.ByteString) -> String
-getStatus file = case file of
+getStatus :: NP.PpmParseResult -> String
+getStatus (Right file) = case file of
                         ([], _)           -> ""
                         (images, Nothing) -> concat $ map show images
                         (_, Just _)       -> show file
