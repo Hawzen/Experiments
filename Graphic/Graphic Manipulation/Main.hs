@@ -82,8 +82,12 @@ serialize (NP.PPM (NP.PPMHeader t w h) img)  =
                 in headStr ++ formatted
 
 
-handlePPM :: NP.PpmParseResult -> [NP.PPM]
-handlePPM (Right (images, rest)) = images
+handlePPM :: NP.PpmParseResult -> IO [NP.PPM]
+handlePPM (Right (images, rest)) = return images
+handlePPM (Left err) = do
+  hPutStrLn "Failed to parse PPM image:"
+  hPutStrLn err
+  exitFailure
 
 
 getStatus :: NP.PpmParseResult -> String
