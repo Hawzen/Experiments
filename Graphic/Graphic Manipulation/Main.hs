@@ -2,6 +2,8 @@ module Main where
 
 import Data.Char
 import Data.Binary
+import System.Exit (exitFailure)
+import System.IO (hPutStrLn, stderr)
 import qualified Data.Vector.Storable as V
 import qualified Foreign.Storable as ST
 import qualified Data.ByteString as BS
@@ -52,8 +54,8 @@ toPixel (x:px) =
 -- IO 
 main = do
         result <- reader
-        let (image:_) = handlePPM result
-        print $ getStatus result
+        (image:_) <- handlePPM result
+        getStatus result
         writeFile "WriteTo.ppm" $ serialize image
         let NP.PPM header imgData = image
         return (header, imgData)
@@ -85,13 +87,18 @@ serialize (NP.PPM (NP.PPMHeader t w h) img)  =
 handlePPM :: NP.PpmParseResult -> IO [NP.PPM]
 handlePPM (Right (images, rest)) = return images
 handlePPM (Left err) = do
-  hPutStrLn "Failed to parse PPM image:"
-  hPutStrLn err
+  putStrLn "Failed to parse PPM image:"
+  putStrLn err
   exitFailure
 
 
-getStatus :: NP.PpmParseResult -> String
-getStatus (Right file) = case file of
-                        ([], _)           -> ""
-                        (images, Nothing) -> concat $ map show images
-                        (_, Just _)       -> show file
+getStatus :: NP.PpmParseResult -> IO ()
+getStatus (Right file) = let result = case file of
+                                ([], _)           -> ""
+                                (images, Nothing) -> concat $ map show images
+                                (_, Just _)       -> show file
+                        in print result
+getStatus (Left err) = do
+  putStrLn "Failed to get status PPM image:"
+  putStrLn err
+  exitFailure
