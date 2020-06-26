@@ -71,13 +71,14 @@ reader = do
 -- PPM P6 image (256,256)
 serialize :: NP.PPM -> String
 serialize (NP.PPM (NP.PPMHeader t w h) img)  =
-                let headStr = foldl1 (\acc x-> x ++ "\n" ++ acc) 
-                                ["65535", show h, show w, "P3"] ++ "\n"
-                    pixels = toPixel $ NP.pixelDataToIntList img -- [[R,G,B], [R,G,B], ...]
+                let intList = NP.pixelDataToIntList img 
+                    headStr = foldl1 (\acc x-> x ++ "\n" ++ acc) 
+                                [show (maximum intList), show h, show w, "P3"] ++ "\n"
+                    pixels = toPixel $ intList-- [[R,G,B], [R,G,B], ...]
                     formatted = -- "R G B\tR G B\t....\nR G B\t..."
                      foldr (\(i,rgb) acc -> 
                         (concatMap (\x -> show x ++ " ") rgb++)
-                            $ if i `mod` w == 0
+                            $ if i `mod` 10 == 0
                                         then '\n':acc
                                         else ' ':acc) 
                             "" $ zip [1..] pixels
