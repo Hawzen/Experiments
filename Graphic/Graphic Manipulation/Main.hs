@@ -35,12 +35,26 @@ instance Functor (Store s) where
     fmap f (Store s fs) = Store s (f . fs)
 
 
--- Image functions
+-- Image
 
 data Coord = Coord Int Int
+data RGB = RGB Word8 Word8 Word8
 
--- createStore :: [NP.PPM] -> (Store a s)
--- createStore img = Store (Coord 0 0) (ST.peek)
+
+-- | [R, G, B, R, G, ...] -> [[R,G,B], [R,G,B], ...]
+toPixel :: [Int] -> [RGB]
+toPixel [] = []
+toPixel (r:g:b:px) = let red =  fromIntegral r
+                         green = fromIntegral g
+                         blue = fromIntegral b
+                     in (RGB red green blue):(toPixel px)
+
+ppmToStore :: NP.PPM -> Store Coord RGB
+ppmToStore (NP.PPM (NP.PPMHeader _ w _) img) = 
+        let pixels = toPixel $ NP.pixelDataToIntList img 
+            accessImg (Coord row col) = pixels !! (row * w + col)
+        in Store (Coord 0 0) accessImg
+
 
 
 -- IO 
@@ -60,7 +74,6 @@ reader = do
             return $ NP.parsePPM file
 
 
--- PPM P6 image (256,256)
 serialize :: NP.PPM -> String
 serialize (NP.PPM (NP.PPMHeader t w h) img)  =
                 let intList = NP.pixelDataToIntList img 
