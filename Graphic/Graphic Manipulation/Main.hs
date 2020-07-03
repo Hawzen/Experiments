@@ -42,14 +42,6 @@ data Coord = Coord Int Int
 -- createStore :: [NP.PPM] -> (Store a s)
 -- createStore img = Store (Coord 0 0) (ST.peek)
 
--- | [R, G, B, R, G, ...] -> [[R,G,B], [R,G,B], ...]
-toPixel :: [a] -> [[a]]
-toPixel (x:px) = 
-            foldr (\(i,a) (h:acc) -> if i `mod` 3 == 0
-                            then    [a]:(h:acc)
-                            else    (a:h):acc
-                            )
-                [[x]] $ zip [1..] px
 
 -- IO 
 main = do
@@ -74,15 +66,7 @@ serialize (NP.PPM (NP.PPMHeader t w h) img)  =
                 let intList = NP.pixelDataToIntList img 
                     headStr = foldl1 (\acc x-> x ++ "\n" ++ acc) 
                                 [show (maximum intList), show h, show w, "P3"] ++ "\n"
-                    pixels = toPixel $ intList-- [[R,G,B], [R,G,B], ...]
-                    formatted = -- "R G B\tR G B\t....\nR G B\t..."
-                     foldr (\(i,rgb) acc -> 
-                        (concatMap (\x -> show x ++ " ") rgb++)
-                            $ if i `mod` 10 == 0
-                                        then '\n':acc
-                                        else ' ':acc) 
-                            "" $ zip [1..] pixels
-                in headStr ++ formatted
+                in headStr ++ (unlines $ map show intList)
 
 
 handlePPM :: NP.PpmParseResult -> IO [NP.PPM]
