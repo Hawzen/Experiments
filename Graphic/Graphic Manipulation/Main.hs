@@ -40,8 +40,11 @@ instance Functor (Store s) where
 data Coord = Coord Int Int
 data RGB = RGB Word8 Word8 Word8
 
+instance Eq RGB where
+    (RGB r g b) == (RGB r2 g2 b2) = r == r2 && g == g2 && b == b2
 
--- | [R, G, B, R, G, ...] -> [[R,G,B], [R,G,B], ...]
+
+-- | [R, G, B, R, G, ...] -> [RGB, RGB, ...]
 toPixel :: [Int] -> [RGB]
 toPixel [] = []
 toPixel (r:g:b:px) = let 
@@ -56,19 +59,30 @@ ppmToStore (NP.PPM (NP.PPMHeader _ w c) img) =
         let pixels = toPixel $ NP.pixelDataToIntList img 
         in Store (Coord 0 0) $ imgf pixels
             where
-
-            imgf :: [RGB] -> Coord -> RGB
-            imgf pixels (Coord row col) 
-                | (w*c) <= row * w + col = pixels !! (row * w + col)
-                | otherwise = RGB 0 0 0
-
--- storeToList :: (Int, Int) -> Store Coord RGB -> [NP.PpmPixelRGB8]
--- storeToList (row, col) (Store _ imgf) = 
---         let access 
+                imgf :: [RGB] -> Coord -> RGB
+                imgf pixels (Coord row col) 
+                    | (w*c) <= row * w + col = pixels !! (row * w + col)
+                    | otherwise = RGB 0 0 0
 
 
--- storeToppm :: Coord -> Store Coord RGB -> NP.PPM
--- storeToppm (Coord w h) (Store _ imgf) = 
+storeToppm :: Store Coord RGB -> NP.PPM
+storeToppm st = let 
+                 imgData = NP.PpmPixelDataRGB8 $ V.fromList $ toList (seek (Coord 0 0) st)
+                 header = NP.PPMHeader NP.P3 0 0 
+                in NP.PPM header imgData
+    where
+     toList :: Store Coord RGB -> [NP.PpmPixelRGB8]
+     toList st@(Store (Coord row col) imgf) =
+                 if current st == (RGB 0 0 0)
+                 then 
+                     []
+                 else
+                     let (RGB r g b) = current st
+                         pixel =  (NP.PpmPixelRGB8 r g b)
+                     in pixel:(toList (Store (Coord row (col+1))imgf))
+
+
+
 
 -- IO 
 main = do
