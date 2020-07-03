@@ -52,11 +52,15 @@ toPixel (r:g:b:px) = let
 
 
 ppmToStore :: NP.PPM -> Store Coord RGB
-ppmToStore (NP.PPM (NP.PPMHeader _ w _) img) = 
+ppmToStore (NP.PPM (NP.PPMHeader _ w c) img) = 
         let pixels = toPixel $ NP.pixelDataToIntList img 
-            imgf (Coord row col) = pixels !! (row * w + col)
-        in Store (Coord 0 0) imgf
+        in Store (Coord 0 0) $ imgf pixels
+            where
 
+            imgf :: [RGB] -> Coord -> RGB
+            imgf pixels (Coord row col) 
+                | (w*c) <= row * w + col = pixels !! (row * w + col)
+                | otherwise = RGB 0 0 0
 
 -- storeToList :: (Int, Int) -> Store Coord RGB -> [NP.PpmPixelRGB8]
 -- storeToList (row, col) (Store _ imgf) = 
@@ -73,6 +77,8 @@ main = do
         getStatus result
         writeFile "WriteTo.ppm" $ serialize image
         let NP.PPM header imgData = image
+        let Store (Coord c _) _ = ppmToStore image
+        print c 
         return (header, imgData)
         -- writeFile "WriteTo.ppm" $ serilize image
     
