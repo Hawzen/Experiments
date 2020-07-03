@@ -84,7 +84,7 @@ storeToppm st = let
 
 
 
--- IO 
+-- IO  
 main = do
         result <- reader
         (image:_) <- handlePPM result
