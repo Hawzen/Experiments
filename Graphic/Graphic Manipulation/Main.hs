@@ -44,18 +44,27 @@ data RGB = RGB Word8 Word8 Word8
 -- | [R, G, B, R, G, ...] -> [[R,G,B], [R,G,B], ...]
 toPixel :: [Int] -> [RGB]
 toPixel [] = []
-toPixel (r:g:b:px) = let red =  fromIntegral r
-                         green = fromIntegral g
-                         blue = fromIntegral b
+toPixel (r:g:b:px) = let 
+                         red    = fromIntegral r
+                         green  = fromIntegral g
+                         blue   = fromIntegral b
                      in (RGB red green blue):(toPixel px)
+
 
 ppmToStore :: NP.PPM -> Store Coord RGB
 ppmToStore (NP.PPM (NP.PPMHeader _ w _) img) = 
         let pixels = toPixel $ NP.pixelDataToIntList img 
-            accessImg (Coord row col) = pixels !! (row * w + col)
-        in Store (Coord 0 0) accessImg
+            imgf (Coord row col) = pixels !! (row * w + col)
+        in Store (Coord 0 0) imgf
 
 
+-- storeToList :: (Int, Int) -> Store Coord RGB -> [NP.PpmPixelRGB8]
+-- storeToList (row, col) (Store _ imgf) = 
+--         let access 
+
+
+-- storeToppm :: Coord -> Store Coord RGB -> NP.PPM
+-- storeToppm (Coord w h) (Store _ imgf) = 
 
 -- IO 
 main = do
