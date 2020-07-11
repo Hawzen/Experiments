@@ -122,8 +122,6 @@ applyFilter filt ppm@(NP.PPM header@(NP.PPMHeader t w h) img) =
             toList :: Store Coord RGB -> Coord -> [NP.PpmPixelRGB8]
             toList st@(Store cntCoord img) endCoord =
                     let newCoord = newCoordf cntCoord endCoord
-                    in 
-                    let 
                         (RGB r g b) = current st
                         pixel = (NP.PpmPixelRGB8 r g b)
                         ptail = if newCoord == (Coord (-1) (-1))
@@ -131,7 +129,7 @@ applyFilter filt ppm@(NP.PPM header@(NP.PPMHeader t w h) img) =
                                     []
                                 else
                                     toList (Store newCoord img) endCoord
-                        in pixel:ptail
+                    in pixel:ptail
 
 
             -- Current Coord -> End Coord -> NextCoord
