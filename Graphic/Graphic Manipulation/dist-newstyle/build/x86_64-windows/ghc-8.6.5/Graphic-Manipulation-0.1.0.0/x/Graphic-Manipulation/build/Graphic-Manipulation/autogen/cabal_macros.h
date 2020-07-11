@@ -22,6 +22,17 @@
   (major1) == 4 && (major2) == 12 && (minor) <= 0)
 #endif /* MIN_VERSION_base */
 
+/* package binary-0.8.6.0 */
+#ifndef VERSION_binary
+#define VERSION_binary "0.8.6.0"
+#endif /* VERSION_binary */
+#ifndef MIN_VERSION_binary
+#define MIN_VERSION_binary(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  8 || \
+  (major1) == 0 && (major2) == 8 && (minor) <= 6)
+#endif /* MIN_VERSION_binary */
+
 /* package bytestring-0.10.8.2 */
 #ifndef VERSION_bytestring
 #define VERSION_bytestring "0.10.8.2"
@@ -43,6 +54,28 @@
   (major1) == 1 && (major2) <  0 || \
   (major1) == 1 && (major2) == 0 && (minor) <= 3)
 #endif /* MIN_VERSION_netpbm */
+
+/* package split-0.2.3.4 */
+#ifndef VERSION_split
+#define VERSION_split "0.2.3.4"
+#endif /* VERSION_split */
+#ifndef MIN_VERSION_split
+#define MIN_VERSION_split(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  2 || \
+  (major1) == 0 && (major2) == 2 && (minor) <= 3)
+#endif /* MIN_VERSION_split */
+
+/* package vector-0.12.1.2 */
+#ifndef VERSION_vector
+#define VERSION_vector "0.12.1.2"
+#endif /* VERSION_vector */
+#ifndef MIN_VERSION_vector
+#define MIN_VERSION_vector(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  12 || \
+  (major1) == 0 && (major2) == 12 && (minor) <= 1)
+#endif /* MIN_VERSION_vector */
 
 /* tool alex-3.2.4 */
 #ifndef TOOL_VERSION_alex

@@ -2,66 +2,100 @@ module Main where
 
 import Data.Char
 import Data.Binary
+import Debug.Trace
+import Data.List.Split
 import System.Exit (exitFailure)
 import System.IO (hPutStrLn, stderr)
-import qualified Data.Vector.Storable as V
-import qualified Foreign.Storable as ST
 import qualified Data.ByteString as BS
 import qualified Graphics.Netpbm as NP
+import qualified Foreign.Storable as ST
+import qualified Data.Vector.Storable as V
 
--- Store functions
+
+-- Data Types
+
 
 data Store s a = Store s (s -> a)
+data Coord = Coord Int Int
+data RGB = RGB Word8 Word8 Word8
+type Kernel = (Store Coord RGB -> RGB)
 
-seek :: s -> Store s a -> Store s a
-seek s (Store _ a) = Store s a
 
-pos :: Store s a -> s
-pos (Store s a) = s
+-- Instances
 
-peek :: s -> Store s a -> a
-peek s (Store _ a) = a s
 
-seeks :: (s -> s) -> Store s a -> Store s a
-seeks fs (Store s a) = Store (fs s) a
+instance Eq Coord where
+    (Coord a b) == (Coord x y) = a == x && b == y
 
-peeks :: (s -> s) -> Store s a -> a
-peeks f (Store s a) = a $ f s
 
-current :: Store s a -> a
-current (Store s a) = a s
+instance Show Coord where
+    show (Coord x y) = show x ++ " " ++ show y
+
+
+instance Num RGB where
+    (RGB r g b) * (RGB r2 g2 b2) = (RGB (r*r2) (g*g2) (b*b2))
+    (RGB r g b) + (RGB r2 g2 b2) = (RGB (r+r2) (g+g2) (b+b2))
+    abs rgb = rgb
+    signum rgb = 1
+    fromInteger i =  let n = fromIntegral i
+                     in  (RGB n n n)
+    negate (RGB r g b) = (RGB (-r) (-g) (-b))
+
+
+instance Show RGB where
+    show (RGB r g b) = unwords $ map show [r, g, b]
+
 
 instance Functor (Store s) where
     fmap f (Store s fs) = Store s (f . fs)
 
 
--- Image
+-- Store Functions
 
-data Coord = Coord Int Int
-data RGB = RGB Word8 Word8 Word8
 
-instance Eq Coord where
-    (Coord a b) == (Coord x y) = a == x && b == y
+seek :: s -> Store s a -> Store s a
+seek s (Store _ a) = Store s a
 
-instance Eq RGB where
-    (RGB r g b) == (RGB r2 g2 b2) = r == r2 && g == g2 && b == b2
 
+pos :: Store s a -> s
+pos (Store s a) = s
+
+
+peek :: s -> Store s a -> a
+peek s (Store _ a) = a s
+
+
+seeks :: (s -> s) -> Store s a -> Store s a
+seeks fs (Store s a) = Store (fs s) a
+
+
+peeks :: (s -> s) -> Store s a -> a
+peeks f (Store s a) = a $ f s
+
+
+current :: Store s a -> a
+current (Store s a) = a s
+
+
+-- Image Stuff
 
 
 applyFilter :: (Store Coord RGB -> Store Coord RGB) -> NP.PPM -> NP.PPM
 applyFilter filt ppm@(NP.PPM header@(NP.PPMHeader t w h) img) = 
         let 
+            endCoord = (Coord w h)
             store = ppmToStore ppm
-            filtered = filt store
-
-
+            filtStore = filt store
+        in storeToppm filtStore header
+    where
+            -- PPM to Store
             ppmToStore :: NP.PPM -> Store Coord RGB
             ppmToStore (NP.PPM (NP.PPMHeader _ w h) img) = 
-                    let pixels = toPixel $ NP.pixelDataToIntList img
+                    let pixels = chunksOf w $ toPixel $ NP.pixelDataToIntList img
                         imgf (Coord row col) = 
-                            if w * h <= row * w + col 
-                                then pixels !! (row * w + col)
-                                else  RGB 0 0 0
+                            if h > row && w > col 
+                                then pixels !! row !! col
+                                else (RGB 0 0 0)
                     in Store (Coord 0 0) $ imgf
 
 
@@ -76,60 +110,83 @@ applyFilter filt ppm@(NP.PPM header@(NP.PPMHeader t w h) img) =
                 in (RGB red green blue):(toPixel px)
 
 
-            storeToppm :: Store Coord RGB -> NP.PPM
-            storeToppm st = 
+            -- Store to PPM 
+            storeToppm :: Store Coord RGB -> NP.PPMHeader -> NP.PPM
+            storeToppm st header@(NP.PPMHeader t w h) = 
                     let 
-                        rgb8List = toList $ seek (Coord 0 0) st
+                        rgb8List = toList (seek (Coord 0 0) st) (Coord w h)
                         imgData = NP.PpmPixelDataRGB8 $ V.fromList rgb8List
                     in NP.PPM header imgData
 
 
-            toList :: Store Coord RGB -> [NP.PpmPixelRGB8]
-            toList st@(Store (Coord row col) img) =
-                    let newCoord = newCoordf (row, col)
-                    in if newCoord == (Coord (-1) (-1))
-                        then 
-                             []
-                        else
-                            let (RGB r g b) = current st
-                                pixel = (NP.PpmPixelRGB8 r g b)
-                            in pixel:(toList (Store newCoord img))
+            toList :: Store Coord RGB -> Coord -> [NP.PpmPixelRGB8]
+            toList st@(Store cntCoord img) endCoord =
+                    let newCoord = newCoordf cntCoord endCoord
+                    in 
+                    let 
+                        (RGB r g b) = current st
+                        pixel = (NP.PpmPixelRGB8 r g b)
+                        ptail = if newCoord == (Coord (-1) (-1))
+                                then 
+                                    []
+                                else
+                                    toList (Store newCoord img) endCoord
+                        in pixel:ptail
 
 
-            newCoordf (row, col)
-                    | h == row && w == col = (Coord (-1) (-1))
-                    | h == row             = (Coord row (col+1))
-                    | w == col             = (Coord (row+1) 0)
+            -- Current Coord -> End Coord -> NextCoord
+            newCoordf :: Coord -> Coord -> Coord
+            newCoordf (Coord row col) (Coord w h)
+                    | h == (row)        = (Coord (-1) (-1))
+                    | w == (col+1)      = (Coord (row+1) 0)
+                    | otherwise         = (Coord row (col+1))
 
 
-        in storeToppm filtered
+-- Sharpen [[0,-1,0], [-1, 5, -1], [0,-1,0]]
+sharpen :: Store Coord RGB -> RGB
+sharpen st =
+        (-1) * (mv 0 1 st)  +
+
+        (-1) * (mv 1 0 st)  +
+        5    * (mv 1 1 st)  +
+        (-1) * (mv 1 2 st)  +
+
+        (-1) * (mv 2 1 st)
+    where
+        mv i j st = 
+            let (Coord x y) = pos st
+            in peek (Coord (x+i) (y+j)) st
+        
+
+convolve :: Kernel -> Store Coord RGB -> Store Coord RGB
+convolve ker st@(Store coord img) = 
+        let newImg c = ker $ seek c st
+        in (Store coord newImg)
 
 
--- kernel :: [[]] -> Store Coord RGB -> Store Coord RGB
--- kernel filt st = 
---         foldl () 0 $ zip 
+-- IO Stuff
 
 
--- IO  
 main = 
         do
             result <- reader
             (image:_) <- handlePPM result
+            let filteredImg = applyFilter (convolve sharpen) image
             printStatus result
-            writeFile "WriteTo.ppm" $ serialize image
+            writeFile "WriteTo.ppm" $ serialize filteredImg
             return ()
     
 
 reader :: IO NP.PpmParseResult
 reader = do
-            file <- BS.readFile "Sample.ppm"
+            file <- BS.readFile "blocks.ppm"
             return $ NP.parsePPM file
 
 
 serialize :: NP.PPM -> String
 serialize (NP.PPM (NP.PPMHeader t w h) img)  =
                 let intList = NP.pixelDataToIntList img 
-                    headStr = unlines [show (maximum intList), show h, show w, "P3"]
+                    headStr = unlines ["P3", show h, show w, show (maximum intList)]
                 in headStr ++ (unlines $ map show intList)
 
 
@@ -153,39 +210,3 @@ printStatus (Left err) =
             putStrLn "Failed to get status PPM image:"
             putStrLn err
             exitFailure
-
-
-{--
-dminuoso 15:22:46
-Func: Interesting idea, but there's a problem with that. If you encounter RGB 0 0 0 pixels in your valid data, that won't work.
-Furthermore, you only scan one single column/row with that.
-Essentially you can't convert it back, without knowing the width and height.
-← Bergle_2 has left (Ping timeout: 246 seconds)
-→ polyphem has joined
-→ manjaro-user_ has joined
-→ Bergle_1 has joined
-→ merijn has joined
-← wei2912 has left (Quit: Lost terminal)
-→ pfurla has joined
-← merijn has left (Ping timeout: 256 seconds)
-dminuoso 15:41:00
-Func: Let's approach this differently. Our task is to take an image, convert some filter to it, and produce the image back.
-dminuoso 15:43:29
-Operationally that would take NP.PPM, convert it into the Store representation, run some as-of-yet unspecified code on the Store representation, and convert it back to NP.PPM
-The unspecified code on the Store representation will be some `gaussianFilter :: Store Coord RGBA -> Store Coord RGBA`
-So the entire function would be some `applyFilter :: (Store Coord RGBA -> Store Coord RGBA) -> NP.PPM -> NP.PPM`
-You should be able to implement that particular function already.
-(And it should make it more obvious how do deal with width and height)
-The ergonomics of this interface will be `let newImage = applyFilter gaussianBlur someImage in ...`
-
-
-Func: Ill give you some bits to get started. Recall how an image convolution (the process by which we apply a kernel to each pixel) worked. Try encoding how the sharpen (i.e. a [[0,-1,0], [-1, 5, -1], [0,-1,0]] kernel) would look like for a single pixel.
-Func: Ill give you some bits to get started. Recall how an image convolution (the process by which we apply a kernel to each pixel) worked. Try encoding how the sharpen (i.e. a [[0,-1,0], [-1, 5, -1], [0,-1,0]] kernel) would work for a pixel using a function.
-The signature for such a function would be `Store Coord RGB -> RGB`, where the "current position" of the argument image is the pixel we want to recalculate, and the result is the newly calculated pixel.
-Make sure you look at the functions you wrote for Store at the beginning, you will need some of them.
-
-Func: You'll be missing one final part after that, which is the `convolute :: Store Coord RGB -> (Store Coord RGB -> RGB) -> Store Coord RGB`
-Once you have that, you can plump everything together and give it a run! :)
-The convolute is the real magic part, its implementation is not very complicated but subtle. :)
-Or rather, call it `convolve` I guess.
---}

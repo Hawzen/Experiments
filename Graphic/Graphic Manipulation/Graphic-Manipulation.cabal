@@ -31,6 +31,9 @@ executable Graphic-Manipulation
   -- other-extensions:
   build-depends:       base ^>=4.12.0.0,
                        bytestring,
+                       split,
+                       binary,
+                       vector,
                        netpbm
   -- hs-source-dirs:
   default-language:    Haskell2010
