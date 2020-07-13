@@ -42,11 +42,11 @@ instance Num RGB where
                      in  (RGB n n n)
     negate (RGB r g b) = (RGB (-r) (-g) (-b))
 
-clamp :: (Integer -> Integer -> Integer) -> Word8 -> Word8 -> Word8
-clamp f x1 x2 =
-    let i1 = toInteger x1
-        i2 = toInteger x2
-    in fromIntegral $ min 255 (f i1 i2) 
+-- clamp :: (Integer -> Integer -> Integer) -> Word8 -> Word8 -> Word8
+-- clamp f x1 x2 =
+--     let i1 = toInteger x1
+--         i2 = toInteger x2
+--     in fromIntegral $ min 255 (f i1 i2) 
 
 
 
@@ -147,6 +147,7 @@ sharpen st =
             let (Coord x y) = pos st
             in peek (Coord (x+i) (y+j)) st        
 
+
 convolve :: Kernel -> Store Coord RGB -> Store Coord RGB
 convolve ker st@(Store coord img) = 
         let newImg c = ker $ seek c st
@@ -206,29 +207,3 @@ printStatus (Left err) =
             putStrLn "Failed to get status PPM image:"
             putStrLn err
             exitFailure
-
-{--
-Func: Hiya, glad to see your first results, it's very curious, isnt it? The simplicity of convolve, being able to fully express image convolution. :)
-dminuoso 18:59:48
-Im going to give you a simple trick to clean that up into a single line, the indexing logic:
-% :t liftA2 (,) [10..20] [0..10]
-> liftA2 (,) [10..20] [0..10]
-lambdabot 19:00:33
- [(10,0),(10,1),(10,2),(10,3),(10,4),(10,5),(10,6),(10,7),(10,8),(10,9),(10,1...
-dminuoso 19:01:10
-Voila, you can use this trick to instantly and correctly generate all coordinates to "probe" the Store representation directly back into an RGB list that you can turn into a PPM.
-dminuoso 19:03:36
-Also, as a next step, let's maybe think of a way to "compose" two filters. If we think of `Store Coord RGB -> RGB` as being characteristic for a single filter, maybe we can cook up some function `compose :: (Store Coord RGB -> RGB) -> (Store Coord RGB -> RGB) -> Store Coord RGB -> RGB` that produces the combined filter of first doing the first, then the next.
-→ mnrmnaugh has joined
-dminuoso 19:05:34
-Think of it as variant of `convolve` that, rather than "applying a filter to an image" gives you the composition of two filters.
-→ ingenthr has joined
-dminuoso 19:08:18
-One additional you have, is that your kernel is shifted. The *center* of the matrix is the current pixel, but you're treating the upper left corner as the current pixel.
-*One additional bug you have
-(This is why you have a black edge at the lower and right side)
-But it doesnt explain the bright artifacts
-dminuoso 19:10:50
-Aha! The bright artifacts are because you probably you have some overflowing artithmatic.
-Recall we're storing the individual components of RGB as just Word8. Try and think how we can deal with that, there's multiple solutions here.
---}
