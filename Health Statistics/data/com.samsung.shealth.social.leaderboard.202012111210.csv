@@ -1,0 +1,5 @@
+com.samsung.shealth.social.leaderboard,6123001,1
+update_time,create_time,my_value,body,type,deviceuuid,pkg_name,last_sync_time,datauuid
+2020-12-11 09:07:22.056,2019-05-30 05:42:48.334,71,20e3389c-a857-4ab1-91af-a7dd2718e542.body.json,101,lv82WtQZxZ,com.sec.android.app.shealth,1607677641855,20e3389c-a857-4ab1-91af-a7dd2718e542,
+2020-12-11 09:07:21.968,2019-05-30 05:42:48.281,61,0e38f06e-cfab-466d-b706-f79132ab083c.body.json,102,lv82WtQZxZ,com.sec.android.app.shealth,1607677641853,0e38f06e-cfab-466d-b706-f79132ab083c,
+2020-12-11 09:07:22.163,2019-05-30 05:42:48.535,1,d221050f-2c70-4c0a-9da0-752b81b75d9d.body.json,200,lv82WtQZxZ,com.sec.android.app.shealth,1607677642143,d221050f-2c70-4c0a-9da0-752b81b75d9d,

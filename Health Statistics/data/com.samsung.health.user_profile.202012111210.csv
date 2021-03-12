@@ -1,0 +1,12 @@
+com.samsung.health.user_profile,6123001,8
+text_value,float_value,update_time,create_time,long_value,key,blob_value,int_value,deviceuuid,pkg_name,double_value,datauuid
+SAU,,1970-01-01 00:00:00.001,1970-01-01 00:00:00.001,,country,,,lv82WtQZxZ,com.sec.android.app.shealth,,00000000-0000-0000-0000-000000000001,
+,,2020-01-12 15:35:56.151,2019-02-01 12:41:41.164,,food_auto_fill,,0,lv82WtQZxZ,com.sec.android.app.shealth,,00000000-0000-0000-0000-00000000001b,
+,,2019-01-30 13:16:30.126,2019-01-28 21:13:34.175,,activity_type,,180002,lv82WtQZxZ,com.sec.android.app.shealth,,00000000-0000-0000-0000-00000000000b,
+21872874,,2020-12-11 09:07:18.548,2019-05-30 05:42:45.435,,social_id,,,lv82WtQZxZ,com.sec.android.app.shealth,,00000000-0000-0000-0000-000000000015,
+,165.0,2019-01-28 21:14:15.702,2019-01-28 21:14:15.706,,height,,,lv82WtQZxZ,com.sec.android.app.shealth,,00000000-0000-0000-0000-000000000008,
+M,,2019-01-28 21:14:15.714,2019-01-28 21:14:15.721,,gender,,,lv82WtQZxZ,com.sec.android.app.shealth,,00000000-0000-0000-0000-000000000005,
+Woot,,2019-05-30 05:43:30.985,2019-05-30 05:43:30.991,,name,,,lv82WtQZxZ,com.sec.android.app.shealth,,00000000-0000-0000-0000-000000000004,
+,77.0,2019-10-12 22:35:39.515,2019-01-28 21:14:15.721,,weight,,,lv82WtQZxZ,com.sec.android.app.shealth,,00000000-0000-0000-0000-000000000006,
+,,2020-03-20 12:40:32.080,2019-01-28 21:12:42.087,,dashboard_config,00000000-0000-0000-0000-000000000016.dashboard_config.json,,lv82WtQZxZ,com.sec.android.app.shealth,,00000000-0000-0000-0000-000000000016,
+20000916,,2019-01-28 21:14:15.721,2019-01-28 21:14:15.725,,birth_date,,,lv82WtQZxZ,com.sec.android.app.shealth,,00000000-0000-0000-0000-00000000000a,

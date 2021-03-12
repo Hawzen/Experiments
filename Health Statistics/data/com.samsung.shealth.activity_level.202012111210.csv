@@ -1,0 +1,9 @@
+com.samsung.shealth.activity_level,6123001,1
+activity_level,start_time,update_time,create_time,time_offset,deviceuuid,pkg_name,datauuid
+180002,2019-01-28 21:13:34.170,2019-01-28 21:13:34.170,2019-01-28 21:13:34.175,UTC+0300,lv82WtQZxZ,com.sec.android.app.shealth,e3cefad6-9b8b-4305-9210-4f1e99da764e,
+180002,2019-01-30 13:16:30.126,2019-01-30 13:16:30.126,2019-01-30 13:16:30.129,UTC+0300,lv82WtQZxZ,com.sec.android.app.shealth,07decc51-b4b7-411b-8f52-84a85d6d9a9e,
+180003,2019-01-28 21:13:43.546,2019-01-28 21:13:43.546,2019-01-28 21:13:43.551,UTC+0300,lv82WtQZxZ,com.sec.android.app.shealth,f790f637-3783-4b73-821d-8fc317b04b8f,
+180002,2019-01-28 21:13:44.209,2019-01-28 21:13:44.209,2019-01-28 21:13:44.213,UTC+0300,lv82WtQZxZ,com.sec.android.app.shealth,b88d63ab-780c-41a3-a2c0-4d2e8aee04bc,
+180003,2019-01-30 13:16:26.181,2019-01-30 13:16:26.181,2019-01-30 13:16:26.193,UTC+0300,lv82WtQZxZ,com.sec.android.app.shealth,870c708a-54da-4c90-b1d4-6067a0f114d2,
+180002,2019-01-30 13:16:26.768,2019-01-30 13:16:26.768,2019-01-30 13:16:26.772,UTC+0300,lv82WtQZxZ,com.sec.android.app.shealth,3fe41793-a83a-4d1a-bcc1-44b539bbf800,
+180005,2019-01-30 13:16:29.089,2019-01-30 13:16:29.089,2019-01-30 13:16:29.096,UTC+0300,lv82WtQZxZ,com.sec.android.app.shealth,870e6179-adca-46bb-ab4b-f212dbaccb1a,

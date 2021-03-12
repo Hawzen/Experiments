@@ -1,0 +1,11 @@
+com.samsung.health.weight,6123001,9
+body_fat_mass,start_time,custom,height,weight,muscle_mass,update_time,create_time,skeletal_muscle,fat_free_mass,basal_metabolic_rate,time_offset,deviceuuid,skeletal_muscle_mass,comment,fat_free,pkg_name,body_fat,datauuid,vfa_level,total_body_water
+,2019-02-17 20:00:36.877,,165.0,80.0,,2019-02-17 20:00:50.582,2019-02-17 20:00:50.582,,,,UTC+0300,lv82WtQZxZ,,,,com.sec.android.app.shealth,,61d31142-8ce0-442b-b199-f2e0f8f384b2,,,
+,2019-01-28 21:14:15.707,,165.0,83.0,,2019-01-28 21:14:15.707,2019-01-28 21:14:15.713,,,,UTC+0300,lv82WtQZxZ,,,,com.sec.android.app.shealth,,ccc55669-c29d-42a3-a424-39d472f2ac0f,,,
+,2019-02-01 12:41:41.089,,165.0,83.0,,2019-02-01 12:41:41.089,2019-02-01 12:41:41.095,,,,UTC+0300,lv82WtQZxZ,,,,com.sec.android.app.shealth,,be0feb24-2501-4e3b-9061-a09fe66fc004,,,
+,2019-06-07 10:20:14.227,,165.0,85.0,,2019-06-07 10:20:21.508,2019-06-07 10:20:21.508,,,,UTC+0300,lv82WtQZxZ,,,,com.sec.android.app.shealth,,ff6e6dc0-ee67-4db7-afd9-ed71ccc8ccc3,,,
+,2019-10-07 15:14:06.106,,165.0,76.0,,2019-10-07 15:14:25.941,2019-10-07 15:14:25.941,,,,UTC+0300,lv82WtQZxZ,,,,com.sec.android.app.shealth,,4ec1ce24-f7c3-4164-8f72-99385865ca19,,,
+,2019-02-25 20:36:00.881,,165.0,82.0,,2019-02-25 20:36:06.103,2019-02-25 20:36:06.103,,,,UTC+0300,lv82WtQZxZ,,,,com.sec.android.app.shealth,,c2db5c55-a5d2-48b7-a644-2083cdd232da,,,
+,2019-10-12 22:35:33.047,,165.0,77.0,,2019-10-12 22:35:39.515,2019-10-12 22:35:39.515,,,,UTC+0300,lv82WtQZxZ,,,,com.sec.android.app.shealth,,c0d595b1-ad91-4c3c-bb24-520f0b8f5d0d,,,
+,2019-02-24 15:25:59.217,,165.0,81.5,,2019-02-24 15:26:18.461,2019-02-24 15:26:18.461,,,,UTC+0300,lv82WtQZxZ,,,,com.sec.android.app.shealth,,f65d9083-7f15-4758-bde6-a1c021d303db,,,
+,2019-05-30 05:46:19.699,,165.0,82.0,,2019-05-30 05:46:24.522,2019-05-30 05:46:24.522,,,,UTC+0300,lv82WtQZxZ,,,,com.sec.android.app.shealth,,feecb0c8-b7f2-4db3-bf24-cba2e48c4021,,,

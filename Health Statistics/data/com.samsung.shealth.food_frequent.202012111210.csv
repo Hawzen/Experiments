@@ -1,0 +1,6 @@
+com.samsung.shealth.food_frequent,6123001,1
+eveningsnack_count,update_time,create_time,morningsnack_count,dinner_count,breakfast_count,deviceuuid,pkg_name,afternoonsnack_count,datauuid,food_info_id,lunch_count
+0.0,2020-01-08 20:01:45.556,2020-01-08 20:01:45.556,0.0,32.0,31.0,lv82WtQZxZ,com.sec.android.app.shealth,0.0,c55b002c-b970-42df-8b56-e253adbfbb40,meal_auto_filled,32.0,
+0.0,2020-01-08 20:01:45.556,2020-01-08 20:01:45.556,0.0,0.0,1.0,lv82WtQZxZ,com.sec.android.app.shealth,0.0,d01ce43c-a94e-440d-a745-07a23314970b,c0fe947a-2334-462c-b209-54ed0532b126,0.0,
+0.0,2020-01-08 20:01:45.557,2020-01-08 20:01:45.557,0.0,0.0,1.0,lv82WtQZxZ,com.sec.android.app.shealth,0.0,aca353f8-01ea-4b9c-8d9e-4a1b5e5f39a0,0f1fc296-392f-479c-9787-85a8bfa23ff0,0.0,
+1.0,2020-01-08 20:01:45.558,2020-01-08 20:01:45.558,0.0,0.0,0.0,lv82WtQZxZ,com.sec.android.app.shealth,0.0,6f96965f-9a9a-4d9c-a18b-865b5c09d12a,948faeb0-d632-403d-bb0c-19a6424ba1e0,0.0,

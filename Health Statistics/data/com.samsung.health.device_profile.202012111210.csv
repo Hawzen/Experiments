@@ -1,0 +1,5 @@
+com.samsung.health.device_profile,6123001,6
+manufacturer,providing_step_goal,step_source_group,device_type,backsync_step_goal,capability,device_group,update_time,create_time,name,model,connectivity_type,deviceuuid,pkg_name,fixed_name,datauuid
+all_target,,,,,,0,2019-01-28 21:12:44.022,2019-01-28 21:12:44.022,all_target,all_target,,Mk66SbFqK1,com.sec.android.app.shealth,Galaxy A8+ (2018),471ca32b-a665-1e9e-7c27-7ac69485dc05,
+Samsung,,,,,,360001,2019-01-28 21:12:40.071,2019-01-28 21:12:40.071,My Device,SM-A730F,,lv82WtQZxZ,com.sec.android.app.shealth,Galaxy A8+ (2018),ad79a8b2-edda-00a9-231d-a91a2ad12246,
+Combined,,,,,,0,2019-01-28 21:12:40.249,2019-01-28 21:12:40.249,Combined,Combined,,VfS0qUERdZ,com.sec.android.app.shealth,Galaxy A8+ (2018),7af9722c-cd99-07b7-853a-43ce58e819c5,

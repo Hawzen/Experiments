@@ -1,0 +1,5 @@
+com.samsung.shealth.food_favorite,6123001,1
+amount,food_type,update_time,create_time,name,unit,favoriteid,calorie,deviceuuid,pkg_name,datauuid,food_info_id
+0.0,2,2019-02-25 20:37:29.569,2019-02-25 20:37:29.569,a24d5c54-aa57-468f-9441-a02709675bf3,,a24d5c54-aa57-468f-9441-a02709675bf3,0.0,lv82WtQZxZ,com.sec.android.app.shealth,329963b1-73d8-4309-958c-d4e9d7853b94,948faeb0-d632-403d-bb0c-19a6424ba1e0,
+1.0,3,2019-02-25 20:37:04.612,2019-02-25 20:37:04.612,برينقلز,120001,4b99ca89-c064-4332-bff3-3c71b2fc8191,1000.0,lv82WtQZxZ,com.sec.android.app.shealth,e6beb16b-ce3d-40fd-8a15-1885b2d14fdc,948faeb0-d632-403d-bb0c-19a6424ba1e0,
+1.0,3,2019-02-10 12:55:39.183,2019-02-10 12:55:39.183,بطاطس,120001,f46c9e2e-016c-49c0-ac66-b6d3de27b2b9,0.0,lv82WtQZxZ,com.sec.android.app.shealth,bea2f897-4895-4724-9fda-8aaf418ec66b,0008c15a-d901-484f-9c45-946a74335ded,

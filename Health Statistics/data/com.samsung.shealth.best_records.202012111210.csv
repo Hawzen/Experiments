@@ -1,0 +1,15 @@
+com.samsung.shealth.best_records,6123001,1
+source_id,device_type,update_time,create_time,source_pkg_name,date,type,value,extra_type,deviceuuid,pkg_name,controller_id,datauuid
+,-100003,2019-02-28 21:00:01.088,2019-02-28 21:00:01.088,,1551312000000,0,9705.0,-1,lv82WtQZxZ,com.sec.android.app.shealth,tracker.pedometer,429037c0-7958-47b7-b7e5-919a98ad8e4f,
+,-100003,2019-06-18 15:00:02.148,2019-06-18 15:00:02.148,,1560816000000,0,24852.0,-1,lv82WtQZxZ,com.sec.android.app.shealth,tracker.pedometer,8c88882a-68c2-459a-a3f7-899350d434a9,
+,-100003,2019-06-10 20:01:00.098,2019-06-10 20:01:00.098,,1560124800000,0,11838.0,-1,lv82WtQZxZ,com.sec.android.app.shealth,tracker.pedometer,4e3736ba-c42a-47fd-bbcd-3e2fdfce1c80,
+,-100003,2019-06-24 15:00:01.406,2019-06-24 15:00:01.406,,1561334400000,0,26128.0,-1,lv82WtQZxZ,com.sec.android.app.shealth,tracker.pedometer,f044c25d-dc20-4468-8abd-76d4692a9810,
+,-100003,2019-06-12 15:00:01.459,2019-06-12 15:00:01.459,,1560297600000,0,13818.0,-1,lv82WtQZxZ,com.sec.android.app.shealth,tracker.pedometer,c76576d8-efe4-4ce2-9f83-31ada7517d56,
+,-100003,2019-06-29 15:00:01.551,2019-06-29 15:00:01.551,,1561766400000,0,26283.0,-1,lv82WtQZxZ,com.sec.android.app.shealth,tracker.pedometer,e1e61ef5-0453-44d7-ab47-fb88a4732bf1,
+,-100003,2019-01-29 21:00:00.933,2019-01-29 21:00:00.933,,1548720000000,0,5864.0,-1,lv82WtQZxZ,com.sec.android.app.shealth,tracker.pedometer,e13965bb-1ef6-4c7a-a9e8-4ffdaac6f1d9,
+,-100003,2019-06-13 15:00:01.233,2019-06-13 15:00:01.233,,1560384000000,0,19046.0,-1,lv82WtQZxZ,com.sec.android.app.shealth,tracker.pedometer,b5487623-a822-4cd7-9d2a-59d413301d5b,
+,-100003,2019-07-04 15:00:02.014,2019-07-04 15:00:02.014,,1562198400000,0,33199.0,-1,lv82WtQZxZ,com.sec.android.app.shealth,tracker.pedometer,68edd99f-9632-466d-9b02-c684a2274f4e,
+,-100003,2019-02-02 21:00:05.335,2019-02-02 21:00:05.335,,1548892800000,0,8157.0,-1,lv82WtQZxZ,com.sec.android.app.shealth,tracker.pedometer,e4e54dbc-8a28-4853-9d08-90ef56e12ee0,
+,-100003,2019-06-14 15:00:05.437,2019-06-14 15:00:05.437,,1560470400000,0,20769.0,-1,lv82WtQZxZ,com.sec.android.app.shealth,tracker.pedometer,ec5b3fe3-742e-46b1-9dfb-4520c7f9ec14,
+,-100003,2019-02-18 21:00:01.148,2019-02-18 21:00:01.148,,1550448000000,0,8363.0,-1,lv82WtQZxZ,com.sec.android.app.shealth,tracker.pedometer,c603f999-d437-4a3f-a175-85458beca675,
+,-100003,2019-06-16 15:00:00.675,2019-06-16 15:00:00.675,,1560643200000,0,21007.0,-1,lv82WtQZxZ,com.sec.android.app.shealth,tracker.pedometer,4c183fa1-ac94-4f8b-b905-a91d48d0dba0,
