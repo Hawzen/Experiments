@@ -11,3 +11,6 @@ Unity\ Effects/*
 NLP/Alshutairi
 NLP/models
 NLP/images
+*/data/
+*/.git/
+Arabic_Caligraphy_Classification/
