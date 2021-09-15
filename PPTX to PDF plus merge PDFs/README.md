@@ -1,1 +1,1 @@
-need comtypes + microsoft presentation thing
+need comtypes + PyPDF2 + microsoft presentation thing
