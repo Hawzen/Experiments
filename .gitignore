@@ -22,3 +22,4 @@ Packets\ Analysis/packets.csv
 Playlist logger/key.txt
 Packets Analysis/pack_it.ipynb
 PPTX\ to\ PDF\ plus\ merge\ PDFs/
+Packets\ Analysis/*.csv
