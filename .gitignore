@@ -23,3 +23,11 @@ Playlist logger/key.txt
 Packets Analysis/pack_it.ipynb
 PPTX\ to\ PDF\ plus\ merge\ PDFs/
 Packets\ Analysis/*.csv
+debug/
+target/
+
+rust/debug/
+rust/target/
+rust/Cargo.lock
+rust/**/*.rs.bk
+rust/*.pdb
